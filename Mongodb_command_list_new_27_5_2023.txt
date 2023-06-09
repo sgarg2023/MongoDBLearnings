@@ -1,0 +1,3670 @@
+MongoBD links:
+
+CURD operations with MongoDB:
+https://www.mongodb.com/docs/v6.0/tutorial/insert-documents/
+https://www.mongodb.com/docs/v6.0/crud/
+
+Add a mongoDB driver:
+https://www.mongodb.com/docs/guides/crud/install/
+
+Add a mongDB GO driver:
+https://www.mongodb.com/docs/drivers/go/current/?_ga=2.113872775.1229721228.1684597246-2031979920.1684597246&_gac=1.215695973.1684597285.CjwKCAjw36GjBhAkEiwAKwIWydCaNarObEd8kTvPVZ69CaU1t94y6GzRfAchHiOLgTowG9lXRMS_4RoCc48QAvD_BwE
+https://www.mongodb.com/docs/drivers/go/current/quick-start/#std-label-golang-quickstart
+https://www.mongodb.com/docs/drivers/go/current/usage-examples/#std-label-golang-usage-examples
+
+Learn more about the MongoDB Drivers: https://docs.mongodb.com/ecosystem/drivers/
+
+Dive into the official Getting Started Docs: https://docs.mongodb.com/manual/tutorial/getting-started/
+
+InsertMany() : https://www.mongodb.com/docs/v3.4/reference/method/db.collection.insertMany/
+
+How to list all the collections:
+https://www.prisma.io/dataguide/mongodb/creating-dbs-and-collections#:~:text=How%20do%20you%20list%20all,using%20the%20show%20collections%20method.&text=Alternatively%2C%20you%20can%20also%20use,same%20results%20in%20an%20array.
+
+More Details about Config Files: https://docs.mongodb.com/manual/reference/configuration-options/
+
+More Details about the Shell (mongo) Options: https://www.mongodb.com/docs/manual/reference/method/
+
+More Details about the Server (mongod) Options: https://docs.mongodb.com/manual/reference/program/mongod/
+
+The MongoDB Compass Docs: https://docs.mongodb.com/compass/master/install/
+
+Only available in the Enterprise Edition => Exploring Schemas in Compass: https://docs.mongodb.com/compass/master/schema/
+
+Go driver for MongoDB:
+https://pkg.go.dev/go.mongodb.org/mongo-driver@v1.11.6/mongo#UpdateManyModel
+https://pkg.go.dev/go.mongodb.org/mongo-driver@v1.11.6/mongo#pkg-overview
+https://www.mongodb.com/docs/drivers/go/current/quick-reference/#std-label-golang-quick-reference
+
+
+Helpful Articles/ Docs:
+
+The MongoDB Limits: https://docs.mongodb.com/manual/reference/limits/
+
+The MongoDB Data Types: https://docs.mongodb.com/manual/reference/bson-types/
+
+More on Schema Validation: https://docs.mongodb.com/manual/core/schema-validation/
+
+insertOne(): https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
+
+insertMany(): https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/
+
+Atomicity: https://docs.mongodb.com/manual/core/write-operations-atomicity/#atomicity
+
+Write Concern: https://docs.mongodb.com/manual/reference/write-concern/
+
+Using mongoimport: https://docs.mongodb.com/manual/reference/program/mongoimport/index.html
+
+Official Document Deletion Docs: https://docs.mongodb.com/manual/tutorial/remove-documents/
+
+----------------------------------------------------------------------------------------------------
+//MongoDB command list:
+
+//To see existing databases 
+show dbs
+test> show dbs
+admin   40.00 KiB
+config  60.00 KiB
+local   40.00 KiB
+test>
+
+test>
+-----------------------------------------------------------------------
+//connect to a database using use command and you can connect to a brand new database simply by using it's name
+test> use shop
+switched to db shop
+shop>
+-----------------------------------------------------------------------
+//Insert documents and collection in one go:
+shop> db.products.insertOne({name:"tally", price: 12.99})
+{witched to db shop
+  acknowledged: true,
+  insertedId: ObjectId("646a23382f9e663d6969cb0f")
+}
+shop>
+---------------------------------------------------------------------------
+//Find command gives all the data in that collection ( products)
+shop> db.products.find()
+[
+  {
+    _id: ObjectId("646a23382f9e663d6969cb0f"),
+    name: 'tally',
+    price: 12.99
+  }
+]
+shop>
+----------------------------------------------------------------------------
+//Add another document with a new field description:
+
+shop> db.products.insertOne({name:"tshirt", price:10, description:"this is a high qulaity tshirt"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("646a251f2f9e663d6969cb10")
+}
+shop>
+
+
+shop> db.products.find()
+[
+  {
+    _id: ObjectId("646a23382f9e663d6969cb0f"),
+    name: 'tally',
+    price: 12.99
+  },
+  {
+    _id: ObjectId("646a251f2f9e663d6969cb10"),
+    name: 'tshirt',
+    price: 10,
+    description: 'this is a high qulaity tshirt'
+  }
+]
+shop>
+--------------------------------------------------------------------------
+//Inserted a third product (computer) to the collection ( products)
+
+
+shop> db.products.insertOne({name:"computer", price:200.50, description:"this is intel PC", details:{CPU: "Intel 7A 8799 series", RAM: 256}})
+{
+  acknowledged: true,
+  insertedId: ObjectId("646a25ee2f9e663d6969cb11")
+}
+shop>
+
+shop> db.products.find()
+[
+  {
+    _id: ObjectId("646a23382f9e663d6969cb0f"),
+    name: 'tally',
+    price: 12.99
+  },
+  {
+    _id: ObjectId("646a251f2f9e663d6969cb10"),
+    name: 'tshirt',
+    price: 10,
+    description: 'this is a high qulaity tshirt'
+  },
+  {
+    _id: ObjectId("646a25ee2f9e663d6969cb11"),
+    name: 'computer',
+    price: 200.5,
+    description: 'this is intel PC',
+    details: { CPU: 'Intel 7A 8799 series', RAM: 256 }
+  }
+]
+shop>
+-----------------------------------------------------------------------------
+//TO START MONGDO server:
+
+sudo mongod
+
+----------------------------------------
+// To change the port of mongod
+
+sudo mongod --port 27018
+
+//default port is : 27017
+
+// to connect the shell to the new port.
+
+mongo --port 27018
+
+-----------------------------------------------------------------------
+
+Another Database created:
+-----------------------------------
+test> show dbs
+admin   40.00 KiB
+config  72.00 KiB
+local   40.00 KiB
+shop    72.00 KiB
+test>
+
+test>
+
+test>
+
+test> use flights
+switched to db flights
+
+
+flights> db.FlightData.insertOne({departureAirport:"MUC",arrivalAirport:"SF0",aircarft:"Airbus A380",distance:12000,intercontinental: true})
+{
+  acknowledged: true,
+  insertedId: ObjectId("646b464cf0d8d896a59be024")
+}
+flights>
+
+db.FlightData.flights({departureAirport:"MUC",arrivalAirport:"SF0",aircarft:"Airbus A380",distance:12000,intercontinental: true},{departureAirport:"JAI",arrivalAirport:"SF1,aircarft:"Airbus A750",distance:14000,intercontinental: false})
+
+flights>
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false
+  }
+]
+flights>
+
+flights> db.FlightData.insertOne({departureAirport:"MUB",arrivalAirport:"SF5",aircarft:"Airbus A450",distance:17000,inteflights> db.FlightData.insertOne({departureAirport:"MUB",arrivalAirport:"SF5",aircarft:"Airbus A450",distance:17000,intercontinental: true, _id:"TX1-1HR-1"})
+{ acknowledged: true, insertedId: 'TX1-1HR-1' }
+flights>
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false
+  },
+  {
+    _id: 'TX1-1HR-1',
+    departureAirport: 'MUB',
+    arrivalAirport: 'SF5',
+    aircarft: 'Airbus A450',
+    distance: 17000,
+    intercontinental: true
+  }
+]
+flights>
+
+------------------------------------------------------------------------
+//duplicate _ID error
+
+flights> db.FlightData.insertOne({departureAirport:"MUB",arrivalAirport:"SF5",aircarft:"Airbus A450",distance:17000,intercontinental: true, _id:"TX1-1HR-1"})
+MongoServerError: E11000 duplicate key error collection: flights.FlightData index: _id_ dup key: { _id: "TX1-1HR-1" }
+flights>
+
+-----------------------------------------------------------------------
+// How to delete data in mongoDB:
+
+flights> db.FlightData.deleteOne({_id:"TX1"})
+{ acknowledged: true, deletedCount: 0 }
+flights>
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false
+  },
+  {
+    _id: 'TX1-1HR-1',
+    departureAirport: 'MUB',
+    arrivalAirport: 'SF5',
+    aircarft: 'Airbus A450',
+    distance: 17000,
+    intercontinental: true
+  }
+]
+flights> db.FlightData.deleteOne({_id:"TX1-1HR-1"})
+{ acknowledged: true, deletedCount: 1 }
+flights>
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false
+  }
+]
+flights>
+-----------------------------------------------------------
+// If we try to delete Mnay documents at all, it will give error, as no field is in common
+
+flights> db.FlightData.deleteMany()
+MongoshInvalidInputError: [COMMON-10001] Missing required argument at position 0 (Collection.deleteMany)
+flights>
+------------------------------------------------------------
+
+//deleteMany requires identical fields for all the documents in a collection
+//we can use {} curly braces inside deleteMany() and it will work
+//updateOne --> use $set:
+
+flights> db.FlightData.deleteMany()
+MongoshInvalidInputError: [COMMON-10001] Missing required argument at position 0 (Collection.deleteMany)
+flights>
+
+flights> db.FlightData.updateOne({distance: 12000}, {marker:"delete"})
+MongoInvalidArgumentError: Update document requires atomic operators
+flights>
+
+flights> db.FlightData.updateOne({distance: 12000}, {set: {marker:"delete"}})
+MongoInvalidArgumentError: Update document requires atomic operators
+flights>
+
+flights> db.FlightData.updateOne({distance: 12000}, {$set: {marker:"delete"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    marker: 'delete'
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false
+  }
+]
+flights>
+
+----------------------------------------------------
+//UpdateMany
+
+flights> db.FlightData.updateMany({}, {$set: {marker:"toDelete"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+flights>
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    marker: 'toDelete'
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false,
+    marker: 'toDelete'
+  }
+]
+flights>
+-----------------------------------------------------------
+//deleetMany works
+
+flights> db.FlightData.find()
+[
+  {
+    _id: ObjectId("646b464cf0d8d896a59be024"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SF0',
+    aircarft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    marker: 'toDelete'
+  },
+  {
+    _id: ObjectId("646b4678f0d8d896a59be025"),
+    departureAirport: 'JAI',
+    arrivalAirport: 'SF1',
+    aircarft: 'Airbus A750',
+    distance: 14000,
+    intercontinental: false,
+    marker: 'toDelete'
+  }
+]
+flights>
+
+flights>
+
+flights>
+
+flights> db.FlightData.deleteMany({},{marker:"toDelete"})
+{ acknowledged: true, deletedCount: 2 }
+flights>
+
+---------------------------------------------------------------
+
+//InsertMany command
+
+flights> db.FlightsData.insertMany([
+...   {
+...     "departureAirport": "MUC",
+...     "arrivalAirport": "SFO",
+...     "aircraft": "Airbus A380",
+...     "distance": 12000,
+...     "intercontinental": true
+...   },
+...   {
+...     "departureAirport": "LHR",
+...     "arrivalAirport": "TXL",
+...     "aircraft": "Airbus A320",
+...     "distance": 950,
+...     "intercontinental": false
+...   }
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("646ba675f0d8d896a59be026"),
+    '1': ObjectId("646ba675f0d8d896a59be027")
+  }
+}
+flights>
+
+flights>
+
+-------------------------------------------------------------
+//FindOne() using a field 
+
+flights> db.FlightsData.find({"intercontinental":true})
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: trueot defined
+  }
+]
+flights>
+
+
+flights> db.FlightsData.find({distance:12000})
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true
+  }
+]
+flights>
+----------------------------------------------------------
+
+//greater than in find() 
+
+flights> db.FlightsData.find({distance: {$gt: 9000}})
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true
+  }
+]
+flights>
+
+-------------------------------------------------
+
+//
+
+
+flights> db.FlightsData.findOne({distance: {$gt: 900}})
+{
+  _id: ObjectId("646ba675f0d8d896a59be026"),
+  departureAirport: 'MUC',
+  arrivalAirport: 'SFO',
+  aircraft: 'Airbus A380',
+  distance: 12000,
+  intercontinental: true
+}
+flights>
+-------------------------------------------------
+// updateOne()
+
+flights> db.FlightsData.updateOne({"_id": ObjectId("646ba675f0d8d896a59be026")}, {$set : {delayed: true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+
+flights>
+
+flights>
+
+flights> db.FlightsData.findOne({distance: {$gt: 900}})
+{
+  _id: ObjectId("646ba675f0d8d896a59be026"),
+  departureAirport: 'MUC',
+  arrivalAirport: 'SFO',
+  aircraft: 'Airbus A380',
+  distance: 12000,
+  intercontinental: true,
+  delayed: true
+}
+flights>
+
+------------------------------------------------
+
+flights> db.FlightsData.updateOne({"_id": ObjectId("646ba675f0d8d896a59be026")}, {$set : {delayed: true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+flights>
+
+flights> db.FlightsData.updateOne({"_id": ObjectId("646ba675f0d8d896a59be026")}, {$set : {delayed: false}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+----------------------------------------------------
+// update() versions without $set clause
+
+
+flights> db.FlightsData.updateOne({"_id": ObjectId("646ba675f0d8d896a59be026")},{delayed: false})
+MongoInvalidArgumentError: Update document requires atomic operators
+flights>
+
+flights>
+
+flights> db.FlightsData.updateMany({"_id": ObjectId("646ba675f0d8d896a59be026")},{delayed: false})
+MongoInvalidArgumentError: Update document requires atomic operators
+flights>
+
+flights>
+
+flights> db.FlightsData.update({"_id": ObjectId("646ba675f0d8d896a59be026")},{delayed: false})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+MongoInvalidArgumentError: Update document requires atomic operators
+flights>
+
+flights> db.FlightsData.findOne({distance: {$gt: 900}})
+{
+  _id: ObjectId("646ba675f0d8d896a59be026"),
+  departureAirport: 'MUC',
+  arrivalAirport: 'SFO',
+  aircraft: 'Airbus A380',
+  distance: 12000,
+  intercontinental: true,
+  delayed: false
+}
+flights>
+
+--------------------------------------------------------
+//update() with $set method
+
+flights> db.FlightsData.update({ _id: ObjectId("646ba675f0d8d896a59be027")}, {$set : {FlightCancelled:"Cancelled"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+
+flights>
+
+flights> db.FlightsData.find()
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    delayed: false
+  },
+  {
+    _id: ObjectId("646ba675f0d8d896a59be027"),
+    departureAirport: 'LHR',
+    arrivalAirport: 'TXL',
+    aircraft: 'Airbus A320',
+    distance: 950,
+    intercontinental: false,
+    FlightCancelled: 'Cancelled'
+  }
+]
+flights>
+----------------------------------------------------
+
+//update() without $set method, erases old record
+test> db.FlightsData.update({ _id: ObjectId("646ba675f0d8d896a59be027")}, {countPassengers:100})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+MongoInvalidArgumentError: Update document requires atomic operators
+test>
+------------------------------------------------------
+//insertMany()
+
+resturants> db.restNames.insertMany([{ "_id" : 2, "name" : "Rock A Feller Bar and Grill", "violations" : 2 },
+... { "_id" : 3, "name" : "Empire State Sub", "violations" : 5 },
+... { "_id" : 4, "name" : "Pizza Rat's Pizzaria", "violations" : 8 }
+... ])
+{ acknowledged: true, insertedIds: { '0': 2, '1': 3, '2': 4 } }
+resturants>
+
+resturants>
+
+resturants>
+
+resturants> db.restNames.find()
+[
+  { _id: 2, name: 'Rock A Feller Bar and Grill', violations: 2 },
+  { _id: 3, name: 'Empire State Sub', violations: 5 },
+  { _id: 4, name: "Pizza Rat's Pizzaria", violations: 8 }
+]
+resturants>
+--------------------------------------------------
+resturants> db.restNames.insert({ "_id" : 5, "name" : "Swiss Pizzaria", "violations" : 12 })
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{ acknowledged: true, insertedIds: { '0': 5 } }
+resturants>
+
+resturants> db.restNames.find()
+[
+  { _id: 2, name: 'Rock A Feller Bar and Grill', violations: 2 },
+  { _id: 3, name: 'Empire State Sub', violations: 5 },
+  { _id: 4, name: "Pizza Rat's Pizzaria", violations: 8 },
+  { _id: 5, name: 'Swiss Pizzaria', violations: 12 }
+]
+resturants>
+
+resturants> db.restNames.updateOne({_id:5},{$set:{ "violations" : 5 }})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+resturants>
+---------------------------------------------------
+//replaceOne()
+
+resturants> db.restNames.find()
+[
+  { _id: 2, name: 'Rock A Feller Bar and Grill', violations: 2 },
+  { _id: 3, name: 'Empire State Sub', violations: 5 },
+  { _id: 4, name: "Pizza Rat's Pizzaria", violations: 8 },
+  { _id: 5, name: 'Swiss Pizzaria', violations: 12 }
+]
+resturants>
+
+resturants> db.restNames.updateOne({_id:5},{$set:{ "violations" : 5 }})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+resturants>
+
+resturants> db.restNames.replaceOne({_id:5},{$set:{ "violations" : 20 }})
+MongoInvalidArgumentError: Replacement document must not contain atomic operators
+resturants>
+
+resturants> db.restNames.replaceOne({_id:5},{ "violations" : 20 })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+resturants>
+
+resturants>
+
+resturants> db.restNames.find()
+[
+  { _id: 2, name: 'Rock A Feller Bar and Grill', violations: 2 },
+  { _id: 3, name: 'Empire State Sub', violations: 5 },
+  { _id: 4, name: "Pizza Rat's Pizzaria", violations: 8 },
+  { _id: 5, violations: 20 }
+]
+resturants>
+
+----------------------------------------------------------------
+//UpdateMany()
+
+resturants> use flights
+switched to db flights
+flights>
+
+flights>
+
+flights>
+
+flights> db.FlightsData.find()
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    delayed: false
+  },
+  {
+    _id: ObjectId("646ba675f0d8d896a59be027"),
+    departureAirport: 'LHR',
+    arrivalAirport: 'TXL',
+    aircraft: 'Airbus A320',
+    distance: 950,
+    intercontinental: false,
+    FlightCancelled: 'Cancelled'
+  }
+]
+flights>
+
+flights>
+
+flights> db.passengersDetails.insertMany([
+...   {
+...     "name": "Max Schwarzmueller",
+...     "age": 29
+...   },
+...   {
+...     "name": "Manu Lorenz",
+...     "age": 30
+...   },
+...   {
+...     "name": "Chris Hayton",
+...     "age": 35
+...   },
+...   {
+...     "name": "Sandeep Kumar",
+...     "age": 28
+...   },
+...   {
+...     "name": "Maria Jones",
+...     "age": 30
+...   },
+...   {
+...     "name": "Alexandra Maier",
+...     "age": 27
+...   },
+...   {
+...     "name": "Dr. Phil Evans",
+...     "age": 47
+...   },
+...   {
+...     "name": "Sandra Brugge",
+...     "age": 33
+...   },
+...   {
+...     "name": "Elisabeth Mayr",
+...     "age": 29
+...   },
+...   {
+...     "name": "Frank Cube",
+...     "age": 41
+...   },
+...   {
+...     "name": "Karandeep Alun",
+...     "age": 48
+...   },
+...   {
+...     "name": "Michaela Drayer",
+...     "age": 39
+...   },
+...   {
+...     "name": "Bernd Hoftstadt",
+...     "age": 22
+...   },
+...   {
+...     "name": "Scott Tolib",
+...     "age": 44
+...   },
+...   {
+...     "name": "Freddy Melver",
+...     "age": 41
+...   },
+...   {
+...     "name": "Alexis Bohed",
+...     "age": 35
+...   },
+...   {
+...     "name": "Melanie Palace",
+...     "age": 27
+...   },
+...   {
+...     "name": "Armin Glutch",
+...     "age": 35
+...   },
+...   {
+...     "name": "Klaus Arber",
+...     "age": 53
+...   },
+...   {
+...     "name": "Albert Twostone",
+...     "age": 68
+...   },
+...   {
+...     "name": "Gordon Black",
+...     "age": 38
+...   }
+... ]
+... )
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("646cf375db10ab4f7a1daa14"),
+    '1': ObjectId("646cf375db10ab4f7a1daa15"),
+    '2': ObjectId("646cf375db10ab4f7a1daa16"),
+    '3': ObjectId("646cf375db10ab4f7a1daa17"),
+    '4': ObjectId("646cf375db10ab4f7a1daa18"),
+    '5': ObjectId("646cf375db10ab4f7a1daa19"),
+    '6': ObjectId("646cf375db10ab4f7a1daa1a"),
+    '7': ObjectId("646cf375db10ab4f7a1daa1b"),
+    '8': ObjectId("646cf375db10ab4f7a1daa1c"),
+    '9': ObjectId("646cf375db10ab4f7a1daa1d"),
+    '10': ObjectId("646cf375db10ab4f7a1daa1e"),
+    '11': ObjectId("646cf375db10ab4f7a1daa1f"),
+    '12': ObjectId("646cf375db10ab4f7a1daa20"),
+    '13': ObjectId("646cf375db10ab4f7a1daa21"),
+    '14': ObjectId("646cf375db10ab4f7a1daa22"),
+    '15': ObjectId("646cf375db10ab4f7a1daa23"),
+    '16': ObjectId("646cf375db10ab4f7a1daa24"),
+    '17': ObjectId("646cf375db10ab4f7a1daa25"),
+    '18': ObjectId("646cf375db10ab4f7a1daa26"),
+    '19': ObjectId("646cf375db10ab4f7a1daa27"),
+    '20': ObjectId("646cf375db10ab4f7a1daa28")
+  }
+}
+flights>
+
+----------------------------------------------------------------
+// it cursor, find() command give only first 20 documents, then it gives us a cursor it, to fetch the next 20 set of documents
+
+flights> db.passengersDetails.find()
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa14"),
+    name: 'Max Schwarzmueller',
+    age: 29
+  },
+  { 
+    _id: ObjectId("646cf375db10ab4f7a1daa15"),
+    name: 'Manu Lorenz',
+    age: 30
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa16"),
+    name: 'Chris Hayton',
+    age: 35
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa17"),
+    name: 'Sandeep Kumar',
+    age: 28
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa18"),
+    name: 'Maria Jones',
+    age: 30
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa19"),
+    name: 'Alexandra Maier',
+    age: 27
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1a"),
+    name: 'Dr. Phil Evans',
+    age: 47
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1b"),
+    name: 'Sandra Brugge',
+    age: 33
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1c"),
+    name: 'Elisabeth Mayr',
+    age: 29
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1d"),
+    name: 'Frank Cube',
+    age: 41
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1e"),
+    name: 'Karandeep Alun',
+    age: 48
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1f"),
+    name: 'Michaela Drayer',
+    age: 39
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa20"),
+    name: 'Bernd Hoftstadt',
+    age: 22
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa21"),
+    name: 'Scott Tolib',
+    age: 44
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa22"),
+    name: 'Freddy Melver',
+    age: 41
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa23"),
+    name: 'Alexis Bohed',
+    age: 35
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa24"),
+    name: 'Melanie Palace',
+    age: 27
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa25"),
+    name: 'Armin Glutch',
+    age: 35
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa26"),
+    name: 'Klaus Arber',
+    age: 53
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone',
+    age: 68
+  }
+]
+Type "it" for more
+flights>
+
+flights> it
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa28"),
+    name: 'Gordon Black',
+    age: 38
+  }
+]
+flights>
+
+---------------------------------------------------------------
+// .find().toArray() ---> shows last element too
+
+flights> db.passengersDetails.find().toArray()
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa14"),
+    name: 'Max Schwarzmueller',
+    age: 29
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa15"),
+    name: 'Manu Lorenz',
+    age: 30
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa16"),
+    name: 'Chris Hayton',
+    age: 35
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa17"),
+    name: 'Sandeep Kumar',
+    age: 28
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa18"),
+    name: 'Maria Jones',
+    age: 30
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa19"),
+    name: 'Alexandra Maier',
+    age: 27
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1a"),
+    name: 'Dr. Phil Evans',
+    age: 47
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1b"),
+    name: 'Sandra Brugge',
+    age: 33
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1c"),
+    name: 'Elisabeth Mayr',
+    age: 29
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1d"),
+    name: 'Frank Cube',
+    age: 41
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1e"),
+    name: 'Karandeep Alun',
+    age: 48
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1f"),
+    name: 'Michaela Drayer',
+    age: 39
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa20"),
+    name: 'Bernd Hoftstadt',
+    age: 22
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa21"),
+    name: 'Scott Tolib',
+    age: 44
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa22"),
+    name: 'Freddy Melver',
+    age: 41
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa23"),
+    name: 'Alexis Bohed',
+    age: 35
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa24"),
+    name: 'Melanie Palace',
+    age: 27
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa25"),
+    name: 'Armin Glutch',
+    age: 35
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa26"),
+    name: 'Klaus Arber',
+    age: 53
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone',
+    age: 68
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa28"),
+    name: 'Gordon Black',
+    age: 38
+  }
+]
+flights>
+----------------------------------------------------------------
+for insert,update,delete, findOne() methods, cursor do not exists.
+
+-----------------------------------------------------------------
+// How to use projection
+//how to find only some fields, not all using find() :
+// to include a field, use the field_name:1
+// to exclude a field, use the fieldn_name:0
+
+flights> db.passengersDetails.find({},{name:1})
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa14"),
+    name: 'Max Schwarzmueller'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa15"), name: 'Manu Lorenz' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa16"), name: 'Chris Hayton' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa17"), name: 'Sandeep Kumar' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa18"), name: 'Maria Jones' },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa19"),
+    name: 'Alexandra Maier'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1a"), name: 'Dr. Phil Evans' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1b"), name: 'Sandra Brugge' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1c"), name: 'Elisabeth Mayr' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1d"), name: 'Frank Cube' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1e"), name: 'Karandeep Alun' },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1f"),
+    name: 'Michaela Drayer'
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa20"),
+    name: 'Bernd Hoftstadt'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa21"), name: 'Scott Tolib' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa22"), name: 'Freddy Melver' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa23"), name: 'Alexis Bohed' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa24"), name: 'Melanie Palace' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa25"), name: 'Armin Glutch' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa26"), name: 'Klaus Arber' },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone'
+  }
+]
+Type "it" for more
+flights> it
+[ { _id: ObjectId("646cf375db10ab4f7a1daa28"), name: 'Gordon Black' } ]
+flights>
+----------------------------------------------------------------------------------------
+flights> db.passengersDetails.find({},{name:1}).toArray()
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa14"),
+    name: 'Max Schwarzmueller'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa15"), name: 'Manu Lorenz' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa16"), name: 'Chris Hayton' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa17"), name: 'Sandeep Kumar' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa18"), name: 'Maria Jones' },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa19"),
+    name: 'Alexandra Maier'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1a"), name: 'Dr. Phil Evans' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1b"), name: 'Sandra Brugge' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1c"), name: 'Elisabeth Mayr' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1d"), name: 'Frank Cube' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa1e"), name: 'Karandeep Alun' },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa1f"),
+    name: 'Michaela Drayer'
+  },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa20"),
+    name: 'Bernd Hoftstadt'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa21"), name: 'Scott Tolib' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa22"), name: 'Freddy Melver' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa23"), name: 'Alexis Bohed' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa24"), name: 'Melanie Palace' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa25"), name: 'Armin Glutch' },
+  { _id: ObjectId("646cf375db10ab4f7a1daa26"), name: 'Klaus Arber' },
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone'
+  },
+  { _id: ObjectId("646cf375db10ab4f7a1daa28"), name: 'Gordon Black' }
+]
+flights>
+------------------------------------------------------------------------------
+
+
+flights> db.passengersDetails.find({},{name:1, _id:0})
+[
+  { name: 'Max Schwarzmueller' },
+  { name: 'Manu Lorenz' },
+  { name: 'Chris Hayton' },
+  { name: 'Sandeep Kumar' },
+  { name: 'Maria Jones' },
+  { name: 'Alexandra Maier' },
+  { name: 'Dr. Phil Evans' },
+  { name: 'Sandra Brugge' },
+  { name: 'Elisabeth Mayr' },
+  { name: 'Frank Cube' },
+  { name: 'Karandeep Alun' },
+  { name: 'Michaela Drayer' },
+  { name: 'Bernd Hoftstadt' },
+  { name: 'Scott Tolib' },
+  { name: 'Freddy Melver' },
+  { name: 'Alexis Bohed' },
+  { name: 'Melanie Palace' },
+  { name: 'Armin Glutch' },
+  { name: 'Klaus Arber' },
+  { name: 'Albert Twostone' }
+]
+Type "it" for more
+flights> it
+[ { name: 'Gordon Black' } ]
+flights>
+
+------------------------------------------------------------------------------------
+
+flights> db.passengersDetails.find({},{name:1, _id:0, age:1})
+[
+  { name: 'Max Schwarzmueller', age: 29 },
+  { name: 'Manu Lorenz', age: 30 },
+  { name: 'Chris Hayton', age: 35 },
+  { name: 'Sandeep Kumar', age: 28 },
+  { name: 'Maria Jones', age: 30 },
+  { name: 'Alexandra Maier', age: 27 },
+  { name: 'Dr. Phil Evans', age: 47 },
+  { name: 'Sandra Brugge', age: 33 },
+  { name: 'Elisabeth Mayr', age: 29 },
+  { name: 'Frank Cube', age: 41 },
+  { name: 'Karandeep Alun', age: 48 },
+  { name: 'Michaela Drayer', age: 39 },
+  { name: 'Bernd Hoftstadt', age: 22 },
+  { name: 'Scott Tolib', age: 44 },
+  { name: 'Freddy Melver', age: 41 },
+  { name: 'Alexis Bohed', age: 35 },
+  { name: 'Melanie Palace', age: 27 },
+  { name: 'Armin Glutch', age: 35 },
+  { name: 'Klaus Arber', age: 53 },
+  { name: 'Albert Twostone', age: 68 }
+]
+Type "it" for more
+flights> it
+[ { name: 'Gordon Black', age: 38 } ]
+flights>
+
+---------------------------------------------------------------------------------------
+//hard limits
+// we have 100 levels of nextings/embedded documents//
+// the overall size of the document has to be below 16 MB//
+//we can have arrays of embedded documents and array can hold any data//
+
+flights> db.FlightsData.update({},{$set: {status: {description:"on-time",lastUpdated:"1 hour ago"}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+flights> db.FlightsData.update({},{$set: {status: {description:"on-time",lastUpdated:"1 hour ago", details: {CaptainName : "Shubhra Garg"}}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+flights> db.FlightsData.find().pretty()
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    delayed: false,
+    status: {
+      description: 'on-time',
+      lastUpdated: '1 hour ago',
+      details: { CaptainName: 'Shubhra Garg' }
+    }
+  },
+  {
+    _id: ObjectId("646ba675f0d8d896a59be027"),
+    departureAirport: 'LHR',
+    arrivalAirport: 'TXL',
+    aircraft: 'Airbus A320',
+    distance: 950,
+    intercontinental: false,
+    FlightCancelled: 'Cancelled'
+  }
+]
+flights>
+
+-----------------------------------------------------------------
+// Working with Array
+
+flights> db.passengersDetails.updateOne({name: 'Albert Twostone'}, {$set: {hobbies : ["sports", "cooking", "swimming"]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+flights>
+
+flights> db.passengersDetails.find({name: "Albert Twostone"}).pretty()
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone',
+    age: 68,
+    hobbies: [ 'sports', 'cooking', 'swimming' ]
+  }
+]
+flights>
+
+
+flights> db.passengersDetails.find().pretty()
+[   name: 'Chris Hayton',
+  { age: 35
+    _id: ObjectId("646cf375db10ab4f7a1daa14"),
+    name: 'Max Schwarzmueller',
+    age: 29jectId("646cf375db10ab4f7a1daa17"),
+  },name: 'Sandeep Kumar',
+  { age: 28
+    _id: ObjectId("646cf375db10ab4f7a1daa15"),
+    name: 'Manu Lorenz',
+    age: 30jectId("646cf375db10ab4f7a1daa18"),
+  },name: 'Maria Jones',
+  { age: 30
+    _id: ObjectId("646cf375db10ab4f7a1daa16"),
+    name: 'Chris Hayton',
+    age: 35jectId("646cf375db10ab4f7a1daa19"),
+  },name: 'Alexandra Maier',
+  { age: 27
+    _id: ObjectId("646cf375db10ab4f7a1daa17"),
+    name: 'Sandeep Kumar',
+    age: 28jectId("646cf375db10ab4f7a1daa1a"),
+  },name: 'Dr. Phil Evans',
+  { age: 47
+    _id: ObjectId("646cf375db10ab4f7a1daa18"),
+    name: 'Maria Jones',
+    age: 30jectId("646cf375db10ab4f7a1daa1b"),
+  },name: 'Sandra Brugge',
+  { age: 33
+    _id: ObjectId("646cf375db10ab4f7a1daa19"),
+    name: 'Alexandra Maier',
+    age: 27jectId("646cf375db10ab4f7a1daa1c"),
+  },name: 'Elisabeth Mayr',
+  { age: 29
+    _id: ObjectId("646cf375db10ab4f7a1daa1a"),
+    name: 'Dr. Phil Evans',
+    age: 47jectId("646cf375db10ab4f7a1daa1d"),
+  },name: 'Frank Cube',
+  { age: 41
+    _id: ObjectId("646cf375db10ab4f7a1daa1b"),
+    name: 'Sandra Brugge',
+    age: 33jectId("646cf375db10ab4f7a1daa1e"),
+  },name: 'Karandeep Alun',
+  { age: 48
+    _id: ObjectId("646cf375db10ab4f7a1daa1c"),
+    name: 'Elisabeth Mayr',
+    age: 29jectId("646cf375db10ab4f7a1daa1f"),
+  },name: 'Michaela Drayer',
+  { age: 39
+    _id: ObjectId("646cf375db10ab4f7a1daa1d"),
+    name: 'Frank Cube',
+    age: 41jectId("646cf375db10ab4f7a1daa20"),
+  },name: 'Bernd Hoftstadt',
+  { age: 22
+    _id: ObjectId("646cf375db10ab4f7a1daa1e"),
+    name: 'Karandeep Alun',
+    age: 48jectId("646cf375db10ab4f7a1daa21"),
+  },name: 'Scott Tolib',
+  { age: 44
+    _id: ObjectId("646cf375db10ab4f7a1daa1f"),
+    name: 'Michaela Drayer',
+    age: 39jectId("646cf375db10ab4f7a1daa22"),
+  },name: 'Freddy Melver',
+  { age: 41
+    _id: ObjectId("646cf375db10ab4f7a1daa20"),
+    name: 'Bernd Hoftstadt',
+    age: 22jectId("646cf375db10ab4f7a1daa23"),
+  },name: 'Alexis Bohed',
+  { age: 35
+    _id: ObjectId("646cf375db10ab4f7a1daa21"),
+    name: 'Scott Tolib',
+    age: 44jectId("646cf375db10ab4f7a1daa24"),
+  },name: 'Melanie Palace',
+  { age: 27
+    _id: ObjectId("646cf375db10ab4f7a1daa22"),
+    name: 'Freddy Melver',
+    age: 41jectId("646cf375db10ab4f7a1daa25"),
+  },name: 'Armin Glutch',
+  { age: 35
+    _id: ObjectId("646cf375db10ab4f7a1daa23"),
+    name: 'Alexis Bohed',
+    age: 35jectId("646cf375db10ab4f7a1daa26"),
+  },name: 'Klaus Arber',
+  { age: 53
+    _id: ObjectId("646cf375db10ab4f7a1daa24"),
+    name: 'Melanie Palace',
+    age: 27jectId("646cf375db10ab4f7a1daa27"),
+  },name: 'Albert Twostone',
+  { age: 68,
+    _id: ObjectId("646cf375db10ab4f7a1daa25"), ]
+    name: 'Armin Glutch',
+    age: 35
+  }, "it" for more
+  {ghts>
+    _id: ObjectId("646cf375db10ab4f7a1daa26"),
+    name: 'Klaus Arber',
+    age: 53
+  },hts> it
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone',b10ab4f7a1daa28"),
+    age: 68,ordon Black',
+    hobbies: [ 'sports', 'cooking', 'swimming' ]
+  }
+]
+Type "it" for more
+flights> it
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa28"),
+    name: 'Gordon Black',
+    age: 38
+  }
+]
+flights>
+-----------------------------------------------------------------
+// Find only hobbies:
+
+flights> db.passengersDetails.find({name: "Albert Twostone"}).pretty()
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone',
+    age: 68,
+    hobbies: [ 'sports', 'cooking', 'swimming' ]
+  }
+]
+flights>
+
+flights>
+
+flights> db.passengersDetails.find({name: "Albert Twostone"}).hobbies
+
+flights>
+
+flights>
+
+flights> db.passengersDetails.findOne({name: "Albert Twostone"}).hobbies
+[ 'sports', 'cooking', 'swimming' ]
+flights>
+
+flights>
+
+flights> db.passengersDetails.find({hobbies: "sports"}).pretty()
+[
+  {
+    _id: ObjectId("646cf375db10ab4f7a1daa27"),
+    name: 'Albert Twostone',
+    age: 68,
+    hobbies: [ 'sports', 'cooking', 'swimming' ]
+  }
+]
+flights>
+
+---------------------------------------------------------------------------
+// how to get the nested document details:
+
+flights> db.FlightsData.find({"status.details.CaptainName": "Shubhra Garg"}).pretty()
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    delayed: false,
+    status: {
+      description: 'on-time',
+      lastUpdated: '1 hour ago',
+      details: { CaptainName: 'Shubhra Garg' }
+    }
+  }
+]
+flights>
+
+flights> db.FlightsData.find({"status.description": "on-time"}).pretty()
+[
+  {
+    _id: ObjectId("646ba675f0d8d896a59be026"),
+    departureAirport: 'MUC',
+    arrivalAirport: 'SFO',
+    aircraft: 'Airbus A380',
+    distance: 12000,
+    intercontinental: true,
+    delayed: false,
+    status: {
+      description: 'on-time',
+      lastUpdated: '1 hour ago',
+      details: { CaptainName: 'Shubhra Garg' }
+    }
+  }
+]
+flights>
+
+----------------------------------------------------------------------------------
+
+patients> db.patientData.insertMany([
+...   {
+...     "firstName": "Shubhra",
+...     "lastName": "Garg",
+...     "age": "35",
+...   },
+...   {
+...     "firstName": "Priya",
+...     "lastName": "Sharma",
+...     "age": "32",
+...   },
+...   {
+...     "firstName": "Sandeep",
+...     "lastName": "Tholia",
+...     "age": "29",
+...   },
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    '1': ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    '2': ObjectId("646fdbcfdb10ab4f7a1daa2b")
+  }
+}
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: '35'
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32'
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep',
+    lastName: 'Tholia',
+    age: '29'
+  }
+]
+patients>
+
+patients> db.patientData.updateOne({firstName:"Shubhra"},{$set: {history: [{"disease": "cold", "treatment":"Nasal spray"}]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: '35',
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32'
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep',
+    lastName: 'Tholia',
+    age: '29'
+  }
+]
+patients>
+
+patients> db.patientData.updateOne({firstName:"Priya"},{$set: {history: [{"disease": "fever", "treatment":"Dcold"}]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: '35',
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32',
+    history: [ { disease: 'fever', treatment: 'Dcold' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep',
+    lastName: 'Tholia',
+    age: '29'
+  }
+]
+patients> db.patientData.updateOne({firstName:"Priya"},{$set: {history: [{"disease": "fever", "treatment":"Dcold"},{address : "Park Aveneue 14th cross"}]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: '35',
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32',
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep',
+    lastName: 'Tholia',
+    age: '29'
+  }
+]
+
+patients> db.patientData.updateOne({firstName:"Sandeep"},{$set: {history: [{"disease": "migrane", "treatment":"M cold"},{address : "Long 14th avenue"},{phoneNum: 999999999}]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: '35',
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32',
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep',
+    lastName: 'Tholia',
+    age: '29',
+    history: [
+      { disease: 'migrane', treatment: 'M cold' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ]
+  }
+]
+patients>
+
+---------------------------------------------------------------
+// second assignment :
+
+patients> db.patientData.updateOne({firstName:"Sandeep"},{$set: {age: 31, firstName: "Sandeep kumar",history1: [{"disease": "stomach ache", "treatment":"ENO"},{address : "Long 14th avenue"},{phoneNum: 999999999}]}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: '35',
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32',
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep kumar',
+    lastName: 'Tholia',
+    age: 31,
+    history: [
+      { disease: 'migrane', treatment: 'M cold' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ],
+    history1: [
+      { disease: 'stomach ache', treatment: 'ENO' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ]
+  }
+]
+patients>
+
+---------------------------------------------------
+
+patients> db.patientData.updateOne({firstName:"Shubhra"},{$set: {age: 35}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+patients>
+
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: 35,
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: '32',
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep kumar',
+    lastName: 'Tholia',
+    age: 31,
+    history: [
+      { disease: 'migrane', treatment: 'M cold' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ],
+    history1: [
+      { disease: 'stomach ache', treatment: 'ENO' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ]
+  }
+]
+patients> db.patientData.updateOne({firstName:"Priya"},{$set: {age: 32}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: 35,
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: 32,
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep kumar',
+    lastName: 'Tholia',
+    age: 31,
+    history: [
+      { disease: 'migrane', treatment: 'M cold' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ],
+    history1: [
+      { disease: 'stomach ache', treatment: 'ENO' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ]
+  }
+]
+patients> db.patientData.find({age: {$gt :30}})
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa29"),
+    firstName: 'Shubhra',
+    lastName: 'Garg',
+    age: 35,
+    history: [ { disease: 'cold', treatment: 'Nasal spray' } ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: 32,
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep kumar',
+    lastName: 'Tholia',
+    age: 31,
+    history: [
+      { disease: 'migrane', treatment: 'M cold' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ],
+    history1: [
+      { disease: 'stomach ache', treatment: 'ENO' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ]
+  }
+]
+patients>
+
+---------------------------------------------------------------------------------
+// delete paitent with cold
+patients> db.patientData.deleteMany({"history.disease": "cold"})
+{ acknowledged: true, deletedCount: 1 }
+patients>
+
+patients>
+
+patients> db.patientData.find()
+[
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2a"),
+    firstName: 'Priya',
+    lastName: 'Sharma',
+    age: 32,
+    history: [
+      { disease: 'fever', treatment: 'Dcold' },
+      { address: 'Park Aveneue 14th cross' }
+    ]
+  },
+  {
+    _id: ObjectId("646fdbcfdb10ab4f7a1daa2b"),
+    firstName: 'Sandeep kumar',
+    lastName: 'Tholia',
+    age: 31,
+    history: [
+      { disease: 'migrane', treatment: 'M cold' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ],
+    history1: [
+      { disease: 'stomach ache', treatment: 'ENO' },
+      { address: 'Long 14th avenue' },
+      { phoneNum: 999999999 }
+    ]
+  }
+]
+patients>
+
+-------------------------------------------------------------------------------------
+To get rid of your data, you can simply load the database you want to get rid of (use databaseName) and then execute db.dropDatabase().
+Similarly, you could get rid of a single collection in a database via db.myCollection.drop().
+
+-------------------------------------------------------------------------------------
+// how to set new db path and log path//
+
+create db folder on windows path: E:\MongoDB\Server\6.0\db
+sudo mongod --dbpath E:\MongoDB\Server\6.0\db --logpath E:\MongoDB\Server\6.0\log\log.log
+---------------------------------------------------------------------------------------
+// how to run mongodb in background//
+open cmd prompt as administrator
+net start MongoDB
+----------------------------------------------------------------------------------------
+//how to shutdown the manually started MongoDB server
+
+show dbs
+use admin
+db.shutdownServer()
+-----------------------------------------------------------------------------------------
+// how to stop mongodb in background//
+open cmd prompt as administrator
+net stop MongoDB
+---------------------------------------------------------------------------------------------
+sudo mongod --config 
+----------------------------------------------------------------------------------------------
+Linux : /etc/mongod.conf
+
+Windows : <install directory>\bin\mongod.cfg
+----------------------------------------------------------------------------------------------
+Inside mongo -- type help
+example : help admin //help comes for administrating the database
+use test  //test databases
+db.help()
+-----------------------------------------------------------------------------------------------
+// How to run help() command on database
+db.test.help()
+
+
+arrivalAirport:"SF12" aircraft:"Airbus A380" distance:12000 intercontinental:true
+----------------------------------------------------------------------------------------------
+// How to add null values
+
+show dbs
+admin    40.00 KiB
+config   36.00 KiB
+flights  72.00 KiB
+local    72.00 KiB
+ 
+ 
+ 
+use flights
+'switched to db flights'
+ 
+ 
+db.FlightsData.find()
+{ _id: ObjectId("64738263209122690049dc74"),
+  departureAirport: 'MUC',
+  arrivalAirport: 'SFO',
+  aircraft: 'Airbus A380',
+  distance: 12000,
+  intercontinental: true }
+{ _id: ObjectId("64738263209122690049dc75"),
+  departureAirport: 'LHR',
+  arrivalAirport: 'TXL',
+  aircraft: 'Airbus A320',
+  distance: 950,
+  intercontinental: false }
+{ _id: ObjectId("64738476209122690049dc79"),
+  aircraft: 'Airbus A380',
+  arrivalAirport: 'SF12',
+  departureAirport: 'YAK',
+  distance: '12000',
+  intercontinental: 'true',
+  location: { type: 'Points', coordinates: [ '53.12', '43.09' ] } }
+ 
+ 
+db.FlightsData.updateMany({},{$set: {details : null}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0 }
+ 
+db.FlightsData.find()
+{ _id: ObjectId("64738263209122690049dc74"),
+  departureAirport: 'MUC',
+  arrivalAirport: 'SFO',
+  aircraft: 'Airbus A380',
+  distance: 12000,
+  intercontinental: true,
+  details: null }
+{ _id: ObjectId("64738263209122690049dc75"),
+  departureAirport: 'LHR',
+  arrivalAirport: 'TXL',
+  aircraft: 'Airbus A320',
+  distance: 950,
+  intercontinental: false,
+  details: null }
+{ _id: ObjectId("64738476209122690049dc79"),
+  aircraft: 'Airbus A380',
+  arrivalAirport: 'SF12',
+  departureAirport: 'YAK',
+  distance: '12000',
+  intercontinental: 'true',
+  location: { type: 'Points', coordinates: [ '53.12', '43.09' ] },
+  details: null }
+  
+-------------------------------------------------------------------------------------
+// how to drop database//
+
+use mydatabase
+db.dropDatabase();
+-------------------------------------------------------------------------------------
+// how to check database statistics//
+
+db.stats()
+-----------------------------------------------------------------------
+//How to drop a collection
+
+db.collection.drop()
+db.numbers.deleteMany({})
+db.stats()
+------------------------------------------------------------------------
+// how many objects are there in a collection or DB
+
+use flights
+'switched to db flights'
+ 
+db.stats()
+{
+  db: 'flights',
+  collections: 1,
+  views: 0,
+  objects: 3,
+  avgObjSize: 170.33333333333334,
+  dataSize: 511,
+  storageSize: 36864,
+  indexes: 1,
+  indexSize: 36864,
+  totalSize: 73728,
+  scaleFactor: 1,
+  fsUsedSize: 191530147840,
+  fsTotalSize: 204579270656,
+  ok: 1
+}
+-----------------------------------------------------------------------
+// type of a value as it is stored in mongoDB//
+
+db.numbers.insertOne({a: NumberInt(1)})
+{ acknowledged: true,
+  insertedId: ObjectId("64765e9e65af5108a7f2166b") }
+
+
+db.stats()
+{
+  db: 'flights',
+  collections: 2,
+  views: 0,
+  objects: 4,
+  avgObjSize: 135,
+  dataSize: 540,
+  storageSize: 57344,
+  indexes: 2,
+  indexSize: 57344,
+  totalSize: 114688,
+  scaleFactor: 1,
+  fsUsedSize: 191500451840,
+  fsTotalSize: 204579270656,
+  ok: 1
+}
+
+db.numbers.find()
+{ _id: ObjectId("64765e9e65af5108a7f2166b"), a: 1 }
+ 
+
+typeof db.numbers.findOne().a
+'number'
+------------------------------------------------------------
+Data Types & Limits
+MongoDB has a couple of hard limits - most importantly, a single document in a collection (including all embedded documents it might have) must be <= 16mb. Additionally, you may only have 100 levels of embedded documents.
+
+You can find all limits (in great detail) here: https://docs.mongodb.com/manual/reference/limits/
+
+For the data types, MongoDB supports, you find a detailed overview on this page: https://docs.mongodb.com/manual/reference/bson-types/
+
+Important data type limits are:
+
+Normal integers (int32) can hold a maximum value of +-2,147,483,647
+
+Long integers (int64) can hold a maximum value of +-9,223,372,036,854,775,807
+
+Text can be as long as you want - the limit is the 16mb restriction for the overall document
+
+It's also important to understand the difference between int32 (NumberInt), int64 (NumberLong) and a normal number as you can enter it in the shell. The same goes for a normal double and NumberDecimal.
+
+NumberInt creates a int32 value => NumberInt(55)
+
+NumberLong creates a int64 value => NumberLong(7489729384792)
+
+If you just use a number (e.g. insertOne({a: 1}), this will get added as a normal double into the database. The reason for this is that the shell is based on JS which only knows float/ double values and doesn't differ between integers and floats.
+
+NumberDecimal creates a high-precision double value => NumberDecimal("12.99") => This can be helpful for cases where you need (many) exact decimal places for calculations.
+
+When not working with the shell but a MongoDB driver for your app programming language (e.g. PHP, .NET, Node.js, ...), you can use the driver to create these specific numbers.
+
+Example for Node.js: http://mongodb.github.io/node-mongodb-native/3.1/api/Long.html
+
+This will allow you to build a NumberLong value like this:
+
+const Long = require('mongodb').Long;
+ 
+db.collection('wealth').insert( {
+    value: Long.fromString("121949898291")
+});
+By browsing the API docs for the driver you're using, you'll be able to identify the methods for building int32s, int64s etc.
+
+----------------------------------------------------------------------------
+db.patientsDetails.insertOne({name:"Ashok Gupta", age: 29, diseaseSummary: "summary-max-1"})
+{ acknowledged: true,
+  insertedId: ObjectId("6478eea965af5108a7f2166c") }
+-----------------------------------------------------------------------------
+db.patientsDetails.find()
+{ _id: ObjectId("6478eea965af5108a7f2166c"),
+  name: 'Ashok Gupta',
+  age: 29,
+  diseaseSummary: 'summary-max-1' }
+--------------------------------------------------------------------------
+db.patientsDetails.findOne().diseaseSummary
+'summary-max-1'
+--------------------------------------------------------------------------
+var dsid=db.patientsDetails.findOne().diseaseSummary
+-------------------------------------------------------------------------
+dsid
+'summary-max-1'
+--------------------------------------------------------------------------
+db.diseaseSummary.insertOne({_id:"summary-max-1",diseases: ["cold","broken leg"]})
+{ acknowledged: true, insertedId: 'summary-max-1' }
+ 
+db.diseaseSummary.insertOne({_id:"summary-max-2",diseases: ["sneeze","fever"]})
+{ acknowledged: true, insertedId: 'summary-max-2' }
+db.diseaseSummary.insertOne({_id:"summary-max-3",diseases: ["soar throat","coughing"]})
+{ acknowledged: true, insertedId: 'summary-max-3' }
+----------------------------------------------------------------------------
+db.diseaseSummary.findOne({_id:"summary-max-1"})
+{ _id: 'summary-max-1', diseases: [ 'cold', 'broken leg' ] }
+-----------------------------------------------------------------------------
+var dsid=db.patientsDetails.findOne().diseaseSummary
+db.diseaseSummary.findOne({_id: dsid})
+{ _id: 'summary-max-1', diseases: [ 'cold', 'broken leg' ] }
+
+------------------------------------------------------------------------------
+// how to relate a person to a car//
+// One to One using references//
+
+use persons
+'switched to db persons'
+ 
+db.personDetails.insertOne({name:"shubhra garg", age:"35", address:"park avenue"})
+{ acknowledged: true,
+  insertedId: ObjectId("647a6d1465af5108a7f2166d") }
+ 
+db.cars.insertOne({name:"BMW", model:"A8000", personBelong: ObjectId("647a6d1465af5108a7f2166d")})
+{ acknowledged: true,
+  insertedId: ObjectId("647a6d4965af5108a7f2166e") }
+--------------------------------------------------------------------------------
+use questions
+'switched to db questions'
+
+db.openQuestions.insertOne({_id:"q1", creator:"MAX", question: "How do open the door of fridge?", answers:["q1a1","q2a2"]})
+{ acknowledged: true, insertedId: 'q1' }
+ 
+db.answers.insertOne([{_id:"q1a1", creator:"Lilly", answer: "Just pull the door"},{_id:"q1a2",creator:"Maroon", answer: "press the buttons"}])
+{ acknowledged: true,
+  insertedId: ObjectId("647b178665af5108a7f2166f") }
+  
+db.openQuestions.find()
+{ _id: 'q1',
+  creator: 'MAX',
+  question: 'How do open the door of fridge?',
+  answers: [ 'q1a1', 'q2a2' ] }
+ 
+db.answerss.find()
+db.answers.find()
+{ '0': { _id: 'q1a1', creator: 'Lilly', answer: 'Just pull the door' },
+  '1': { _id: 'q1a2', creator: 'Maroon', answer: 'press the buttons' },
+  _id: ObjectId("647b178665af5108a7f2166f") }
+  
+--------------------------------------------------------------------------------
+db.askQuestions.insertOne({_id:"q11a1", creator: "Mark thomson", ques:"what is the budget for the fridge?",ans:["12000rs","15000rs with warranty","17000rs with 2 years warranty"]})
+{ acknowledged: true, insertedId: 'q11a1' }
+ 
+ 
+db.askQuestions.findOne()
+{ _id: 'q11a1',
+  creator: 'Mark thomson',
+  ques: 'what is the budget for the fridge?',
+  ans: 
+   [ '12000rs',
+     '15000rs with warranty',
+     '17000rs with 2 years warranty' ] }
+-------------------------------------------------------------------------------
+// array of list//
+// One to Many Embedded//
+db.askQuestions.deleteMany({})
+{ acknowledged: true, deletedCount: 1 }
+ 
+db.askQuestions.findOne()
+null
+
+db.askQuestions.insertOne({_id:"q11a1", creator: "Mark thomson", ques:"what is the budget for the fridge?",ans:[{text:"12000rs"},{text:"15000rs with warranty"},{text:"17000rs with 2 years warranty"}]})
+{ acknowledged: true, insertedId: 'q11a1' }
+
+db.askQuestions.findOne()
+{ _id: 'q11a1',
+  creator: 'Mark thomson',
+  ques: 'what is the budget for the fridge?',
+  ans: 
+   [ { text: '12000rs' },
+     { text: '15000rs with warranty' },
+     { text: '17000rs with 2 years warranty' } ] }
+	 
+---------------------------------------------------------------
+db.cities.insertOne({cityName:"New York", coordinates:{lat:"50.55",lng:"40.55"}})
+{ acknowledged: true,
+  insertedId: ObjectId("647b3f5e65af5108a7f21670") }
+ 
+ 
+db.cities.findOne()
+{ _id: ObjectId("647b3f5e65af5108a7f21670"),
+  cityName: 'New York',
+  coordinates: { lat: '50.55', lng: '40.55' } }
+ 
+-----------------------------------------------------------------
+//One to Many using References//
+use cityData
+'switched to db cityData'
+
+db.citizens.insertOne([{name:"shubhra garg",age:35, cityID: ObjectId("647b3f5e65af5108a7f21670")}, {name:"Ankit Garg", age:34, cityID: ObjectId("647b3f5e65af5108a7f21670")}])
+{ acknowledged: true,
+  insertedId: ObjectId("647b405065af5108a7f21671") }
+ 
+db.citizens.findOne()
+{ '0': 
+   { name: 'shubhra garg',
+     age: 35,
+     cityID: ObjectId("647b3f5e65af5108a7f21670") },
+  '1': 
+   { name: 'Ankit Garg',
+     age: 34,
+     cityID: ObjectId("647b3f5e65af5108a7f21670") },
+  _id: ObjectId("647b405065af5108a7f21671") }
+------------------------------------------------------------------
+//Many to Many embedded//
+use shops
+'switched to db shops'
+db.products.insertOne({title:"A Book", price:12.40},{title:"Comic Mix", price:10.40})
+{ acknowledged: true,
+  insertedId: ObjectId("647b526465af5108a7f21672") }
+ 
+db.products.find().pretty()
+{ _id: ObjectId("647b526465af5108a7f21672"),
+  title: 'A Book',
+  price: 12.4 }
+  
+db.customers.find()
+{ _id: ObjectId("647b52c665af5108a7f21673"),
+  name: 'shubhra garg',
+  age: 29 }
+{ _id: ObjectId("647b52d165af5108a7f21674"),
+  name: 'Ankit garg',
+  age: 34 }
+ 
+db.products.find()
+{ _id: ObjectId("647b526465af5108a7f21672"),
+  title: 'A Book',
+  price: 12.4 }
+{ _id: ObjectId("647b530765af5108a7f21675"),
+  title: 'Comic Mix',
+  price: 10.4 }
+
+
+db.customers.updateOne({},{$set: {orders: [{productID:ObjectId("647b526465af5108a7f21672")
+, quantities: 3},{productID: ObjectId("647b526465af5108a7f21672"),quantities:1}]}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+ db.customers.updateOne({name: 'Ankit garg'},{$set: {orders: [{productID:ObjectId("647b526465af5108a7f21672"), quantities: 2},{productID: ObjectId("647b526465af5108a7f21672"),quantities:2}]}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+db.customers.find()
+{ _id: ObjectId("647b52c665af5108a7f21673"),
+  name: 'shubhra garg',
+  age: 29,
+  orders: 
+   [ { productID: ObjectId("647b526465af5108a7f21672"),
+       quantities: 3 },
+     { productID: ObjectId("647b526465af5108a7f21672"),
+       quantities: 1 } ] }
+{ _id: ObjectId("647b52d165af5108a7f21674"),
+  name: 'Ankit garg',
+  age: 34,
+  orders: 
+   [ { productID: ObjectId("647b526465af5108a7f21672"),
+       quantities: 2 },
+     { productID: ObjectId("647b526465af5108a7f21672"),
+       quantities: 2 } ] }
+------------------------------------------------------------------------------
+//Many to many - using references//
+
+use books
+'switched to db books'
+ 
+db.bookDetails.insertOne({name:"Adventure book",authors:[{authname: "samuel", age:29},{authname:"shubh",age:34}]})
+{ acknowledged: true,
+  insertedId: ObjectId("647b5ad765af5108a7f21676") }
+ 
+db.bookDetails.find()
+{ _id: ObjectId("647b5ad765af5108a7f21676"),
+  name: 'Adventure book',
+  authors: 
+   [ { authname: 'samuel', age: 29 },
+     { authname: 'shubh', age: 34 } ] 
+}
+
+db.authors.insertMany([{authname: "samuel",age:29, address:{street: "May avenue park"}},{authname:"shubh",age:34,address:{street:"MG ROAD"}}])
+{ acknowledged: true,
+  insertedIds: 
+   { '0': ObjectId("647b5beb65af5108a7f21677"),
+     '1': ObjectId("647b5beb65af5108a7f21678") } }
+	 
+db.authors.find()
+{ _id: ObjectId("647b5beb65af5108a7f21677"),
+  authname: 'samuel',
+  age: 29,
+  address: { street: 'May avenue park' } }
+{ _id: ObjectId("647b5beb65af5108a7f21678"),
+  authname: 'shubh',
+  age: 34,
+  address: { street: 'MG ROAD' } }
+  
+  
+ db.bookDetails.find()
+{ _id: ObjectId("647b5ad765af5108a7f21676"),
+  name: 'Adventure book',
+  authors: 
+   [ { authname: 'samuel', age: 29 },
+     { authname: 'shubh', age: 34 } ] }
+
+db.bookDetails.update({name:"Adventure book"},{$set: {authors:[ObjectId("647b5beb65af5108a7f21677"),ObjectId("647b5beb65af5108a7f21678")]}})
+'DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.'
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+ 
+db.bookDetails.find()
+{ _id: ObjectId("647b5ad765af5108a7f21676"),
+  name: 'Adventure book',
+  authors: 
+   [ ObjectId("647b5beb65af5108a7f21677"),
+     ObjectId("647b5beb65af5108a7f21678") ] }
+ 
+books
+----------------------------------------------------------------------------------------
+//aggregate - lookup//
+//Merging two collections//
+
+db.bookDetails.find()
+{ _id: ObjectId("647b5ad765af5108a7f21676"),
+  name: 'Adventure book',
+  authors: 
+   [ ObjectId("647b5beb65af5108a7f21677"),
+     ObjectId("647b5beb65af5108a7f21678") ] }
+	 
+db.authors.find()
+{ _id: ObjectId("647b5beb65af5108a7f21677"),
+  authname: 'samuel',
+  age: 29,
+  address: { street: 'May avenue park' } }
+{ _id: ObjectId("647b5beb65af5108a7f21678"),
+  authname: 'shubh',
+  age: 34,
+  address: { street: 'MG ROAD' } }
+
+db.bookDetails.aggregate([{$lookup:{from: "authors",localField:"authors", foreignField:"_id", as:"creators"}}])
+{ _id: ObjectId("647b5ad765af5108a7f21676"),
+  name: 'Adventure book',
+  authors: 
+   [ ObjectId("647b5beb65af5108a7f21677"),
+     ObjectId("647b5beb65af5108a7f21678") ],
+  creators: 
+   [ { _id: ObjectId("647b5beb65af5108a7f21677"),
+       authname: 'samuel',
+       age: 29,
+       address: { street: 'May avenue park' } },
+     { _id: ObjectId("647b5beb65af5108a7f21678"),
+       authname: 'shubh',
+       age: 34,
+       address: { street: 'MG ROAD' } } ] }
+ 
+books
+----------------------------------------------------------------------------
+// implement Blog:
+db.users.insertMany([{name:"shubhra garg",age:34,email_id: "shubhra.garg09@gmail.com"},{name:"ankit garg",age:29,email_id:"gargankit2201@gmail.com"}])
+{ acknowledged: true,
+  insertedIds: 
+   { '0': ObjectId("647b983d65af5108a7f21679"),
+     '1': ObjectId("647b983d65af5108a7f2167a") } }
+ 
+db.users.find()
+{ _id: ObjectId("647b983d65af5108a7f21679"),
+  name: 'shubhra garg',
+  age: 34,
+  email_id: 'shubhra.garg09@gmail.com' }
+{ _id: ObjectId("647b983d65af5108a7f2167a"),
+  name: 'ankit garg',
+  age: 29,
+  email_id: 'gargankit2201@gmail.com' }
+--------------------------------------------
+
+db.users.insertMany([{name:"anita agrawal",age:44,email_id: "anita49@gmail.com"},{name:"sp agrawal",age:64,email_id:"spqagrawal@gmail.com"}])
+{ acknowledged: true,
+  insertedIds: 
+   { '0': ObjectId("647b9b0865af5108a7f2167d"),
+     '1': ObjectId("647b9b0865af5108a7f2167e") } }
+ 
+ 
+db.users.find()
+{ _id: ObjectId("647b983d65af5108a7f21679"),
+  name: 'shubhra garg',
+  age: 34,
+  email_id: 'shubhra.garg09@gmail.com' }
+{ _id: ObjectId("647b983d65af5108a7f2167a"),
+  name: 'ankit garg',
+  age: 29,
+  email_id: 'gargankit2201@gmail.com' }
+{ _id: ObjectId("647b9b0865af5108a7f2167d"),
+  name: 'anita agrawal',
+  age: 44,
+  email_id: 'anita49@gmail.com' }
+{ _id: ObjectId("647b9b0865af5108a7f2167e"),
+  name: 'sp agrawal',
+  age: 64,
+  email_id: 'spqagrawal@gmail.com' }
+  
+-------------
+db.posts.insertOne({title: "My first post",text:"Happy me!", author:ObjectId("647b983d65af5108a7f21679"), tags:["new","generation","happy"], comments:[{text:"Good to see you happy"},{text:"Good luck"},{text:"Welcome!"}]})
+{ acknowledged: true,
+  insertedId: ObjectId("647b999565af5108a7f2167b") }
+------------------
+
+db.posts.insertOne({title: "My first post",text:"Happy me!", author:ObjectId("647b983d65af5108a7f21679"), tags:["new","generation","happy"], comments:[{text:"Good to see you happy", creator:ObjectId("647b983d65af5108a7f2167a")},{text:"Good luck", creator:ObjectId("647b9b0865af5108a7f2167d")},{text:"Welcome!",creator:ObjectId("647b9b0865af5108a7f2167e")}]})
+{ acknowledged: true,
+  insertedId: ObjectId("647b9d8a65af5108a7f2167f") }
+ 
+ 
+db.posts.find().pretty()
+{ _id: ObjectId("647b9d8a65af5108a7f2167f"),
+  title: 'My first post',
+  text: 'Happy me!',
+  author: ObjectId("647b983d65af5108a7f21679"),
+  tags: [ 'new', 'generation', 'happy' ],
+  comments: 
+   [ { text: 'Good to see you happy',
+       creator: ObjectId("647b983d65af5108a7f2167a") },
+     { text: 'Good luck',
+       creator: ObjectId("647b9b0865af5108a7f2167d") },
+     { text: 'Welcome!',
+       creator: ObjectId("647b9b0865af5108a7f2167e") } ] }
+ 
+blog
+----------------------------------------------------------------
+
+//Schema Validation:
+
+db.createCollection('posts',
+                          {validator: {
+                              $jsonSchema:{
+                                bsonType:'object',
+                                required:['title','text','author','comments'],
+                                properties:{
+                                    title:{
+                                        bsonType:'string',
+                                        description:"Title is a required field"
+                                    },
+                                    text:{
+                                        bsonType:'string',
+                                        description:"Text field is required"
+                                    },
+                                    author:{
+                                        bsonType:'object',
+                                        description:"Author is required field"
+                                    },
+                                    comments:{
+                                        bsonType:'array',
+                                        description:"must be an array of list and is required field",
+                                        items:{
+                                            bsonType:'object',
+                                            required:['creator','text'],
+                                            properties:{
+                                                creator:{
+                                                    bsonType:'string',
+                                                    description:"Creator field is required"
+                                                },
+                                                text:{
+                                                    bsonType:'string',
+                                                    description:"text is a required field"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                            }
+                          }})
+---------------------------------------------------------------------------------------------------------
+
+https://forum.golangbridge.org/t/schema-validation-for-mongodb/31809
+
+//changing the validation action:
+
+db.runCommand({collMod: 'posts',
+                          validator: {
+                              $jsonSchema:{
+                                bsonType:'object',
+                                required:['title','text','author','comments'],
+                                properties:{
+                                    title:{
+                                        bsonType:'string',
+                                        description:"Title is a required field"
+                                    },
+                                    text:{
+                                        bsonType:'string',
+                                        description:"Text field is required"
+                                    },
+                                    author:{
+                                        bsonType:'object',
+                                        description:"Author is required field"
+                                    },
+                                    comments:{
+                                        bsonType:'array',
+                                        description:"must be an array of list and is required field",
+                                        items:{
+                                            bsonType:'object',
+                                            required:['creator','text'],
+                                            properties:{
+                                                creator:{
+                                                    bsonType:'string',
+                                                    description:"Creator field is required"
+                                                },
+                                                text:{
+                                                    bsonType:'string',
+                                                    description:"text is a required field"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                            }
+                          },
+                          validationAction:"warn"
+                        })
+						
+--------------------------------------------------------------------------------------
+db.persons.insert({name:"Phil",age:45,hobbies:["sports","cooking"]})
+'DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.'
+{ acknowledged: true,
+  insertedIds: { '0': ObjectId("647c496965af5108a7f2168d") } }
+ 
+ 
+db.persons.find()
+{ _id: ObjectId("647c496965af5108a7f2168d"),
+  name: 'Phil',
+  age: 45,
+  hobbies: [ 'sports', 'cooking' ] }
+blog
+----------------------------------------------------------------------------------------
+//unordered insert of data -- ordered:false
+db.hobbies.drop()
+true
+ 
+db.hobbies.insert([{_id:"sports",name:"Sports"},{_id:"cooking",name:"Cooking"}])
+{ acknowledged: true,
+  insertedIds: { '0': 'sports', '1': 'cooking' } }
+ 
+db.hobbies.insert([{_id:"yoga",name:"Yoga"},{_id:"cooking",name:"Cooking"},{_id:"hiking",name:"Hiking"}])
+MongoBulkWriteError: E11000 duplicate key error collection: blog.hobbies index: _id_ dup key: { _id: "cooking" }
+ 
+db.hobbies.find()
+{ _id: 'sports', name: 'Sports' }
+{ _id: 'cooking', name: 'Cooking' }
+{ _id: 'yoga', name: 'Yoga' }
+db.hobbies.insert([{_id:"yoga",name:"Yoga"},{_id:"cooking",name:"Cooking"},{_id:"hiking",name:"Hiking"},{ordered:false}])
+MongoBulkWriteError: E11000 duplicate key error collection: blog.hobbies index: _id_ dup key: { _id: "yoga" }
+db.hobbies.find()
+{ _id: 'sports', name: 'Sports' }
+{ _id: 'cooking', name: 'Cooking' }
+{ _id: 'yoga', name: 'Yoga' }
+db.hobbies.insert([{_id:"yoga",name:"Yoga"},{_id:"cooking",name:"Cooking"},{_id:"hiking",name:"Hiking"}],{ordered:false})
+MongoBulkWriteError: E11000 duplicate key error collection: blog.hobbies index: _id_ dup key: { _id: "yoga" }
+ 
+db.hobbies.find()
+{ _id: 'sports', name: 'Sports' }
+{ _id: 'cooking', name: 'Cooking' }
+{ _id: 'yoga', name: 'Yoga' }
+{ _id: 'hiking', name: 'Hiking' }
+------------------------------------------------------------------------------------------------
+//WriteConcern in practice
+
+db.persons.insertOne({name:"Max",age:36})
+{ acknowledged: true,
+  insertedId: ObjectId("647d04f365af5108a7f21694") }
+db.persons.insertOne({name:"Bulb",age:54},{writeConcern:{w:0,j:false}})
+{ acknowledged: false,
+  insertedId: ObjectId("647d051c65af5108a7f21695") }
+db.persons.insertOne({name:"Calc",age:34},{writeConcern:{w:1,j:true}})
+{ acknowledged: true,
+  insertedId: ObjectId("647d052d65af5108a7f21696") }
+db.persons.insertOne({name:"Calc",age:34},{writeConcern:{w:1,j:true,wtimeout:200}})
+{ acknowledged: true,
+  insertedId: ObjectId("647d054365af5108a7f21697") }
+db.persons.insertOne({name:"Calc",age:34},{writeConcern:{w:1,j:true,wtimeout:1}})
+{ acknowledged: true,
+  insertedId: ObjectId("647d054765af5108a7f21698") }
+  
+---------------------------------------------------------------------------------------------------
+//command to import bulk of data using mongoimport exe
+
+mongoimport tv-shows.json -d moviesData -c movies --jsonArray -drop
+
+
+Path
+----
+C:\Program Files\MongoDB\Tools\100\bin
+
+(base) PS C:\Program Files\MongoDB\Tools\100\bin> mongoimport C:\Users\shubhra.garg\Downloads\users.json -d moviesData -c movies --jsonArray -drop
+2023-06-07T00:24:29.302+0530    connected to: mongodb://localhost/
+2023-06-07T00:24:29.413+0530    4 document(s) imported successfully. 0 document(s) failed to import.
+(base) PS C:\Program Files\MongoDB\Tools\100\bin>
+(base) PS C:\Program Files\MongoDB\Tools\100\bin> mongoimport C:\Users\shubhra.garg\Downloads\tv-shows.json -d TVShowsData -c tvshows --jsonArray -drop
+2023-06-07T00:25:16.837+0530    connected to: mongodb://localhost/
+2023-06-07T00:25:16.916+0530    240 document(s) imported successfully. 0 document(s) failed to import.
+(base) PS C:\Program Files\MongoDB\Tools\100\bin>
+(base) PS C:\Program Files\MongoDB\Tools\100\bin> pwd
+(base) PS C:\Program Files\MongoDB\Tools\100\bin>
+----------------------------------------------------------------------------------------------------
+
+DeleteMany practised:
+
+db.persons.find()
+{ _id: ObjectId("647c496965af5108a7f2168d"),
+  name: 'Phil',
+  age: 45,
+  hobbies: [ 'sports', 'cooking' ] }
+{ _id: ObjectId("647d04f365af5108a7f21694"),
+  name: 'Max',
+  age: 36 }
+{ _id: ObjectId("647d051c65af5108a7f21695"),
+  name: 'Bulb',
+  age: 54 }
+{ _id: ObjectId("647d052d65af5108a7f21696"),
+  name: 'Calc',
+  age: 34 }
+{ _id: ObjectId("647d054365af5108a7f21697"),
+  name: 'Calc',
+  age: 34 }
+{ _id: ObjectId("647d054765af5108a7f21698"),
+  name: 'Calc',
+  age: 34 }
+ --------------------------
+ 
+db.persons.deleteMany({name:"Calc", age: {$gt : 30}})
+{ acknowledged: true, deletedCount: 3 }
+db.persons.find()
+{ _id: ObjectId("647c496965af5108a7f2168d"),
+  name: 'Phil',
+  age: 45,
+  hobbies: [ 'sports', 'cooking' ] }
+{ _id: ObjectId("647d04f365af5108a7f21694"),
+  name: 'Max',
+  age: 36 }
+{ _id: ObjectId("647d051c65af5108a7f21695"),
+  name: 'Bulb',
+  age: 54 }
+blog
+------------------------------------------------------
+Usage of exists with deleteMany():
+
+db.persons.deleteMany({name:"Max", age: {$exists: false}})
+{ acknowledged: true, deletedCount: 0 }
+------------------------------------------------------
+//exists with deleteMany statement//
+
+db.persons.deleteMany({name:"Max", age: {$exists: false}})
+{ acknowledged: true, deletedCount: 0 }
+
+db.persons.find()
+{ _id: ObjectId("647c496965af5108a7f2168d"),
+  name: 'Phil',
+  age: 45,
+  hobbies: [ 'sports', 'cooking' ] }
+{ _id: ObjectId("647d04f365af5108a7f21694"),
+  name: 'Max',
+  age: 36 }
+{ _id: ObjectId("647d051c65af5108a7f21695"),
+  name: 'Bulb',
+  age: 54 }
+db.persons.deleteMany({name:"Max", age: {$exists: false}})
+{ acknowledged: true, deletedCount: 0 }
+ 
+db.persons.deleteMany({name:"Max", age: {$exists: true}})
+{ acknowledged: true, deletedCount: 1 }
+db.persons.find()
+{ _id: ObjectId("647c496965af5108a7f2168d"),
+  name: 'Phil',
+  age: 45,
+  hobbies: [ 'sports', 'cooking' ] }
+{ _id: ObjectId("647d051c65af5108a7f21695"),
+  name: 'Bulb',
+  age: 54 }
+---------------------------------------------------
+db.deleteMany({})
+------------------
+db.persons.drop()
+true
+ 
+db.persons.find()
+----------------------------------------------------
+// How to drop a database//
+use mydatabase
+'switched to db mydatabase'
+ 
+db.dropDatabase()
+{ ok: 1, dropped: 'mydatabase' }
+
+-------------------------------------------
+db.persons.insertMany([
+  {
+    "name": "Max",
+    "hobbies": [
+      {
+        "title": "Sports",
+        "frequency": 3
+      },
+      {
+        "title": "Cooking",
+        "frequency": 6
+      }
+    ],
+    "phone": 131782734
+  },
+  {
+    "name": "Manuel",
+    "hobbies": [
+      {
+        "title": "Cooking",
+        "frequency": 5
+      },
+      {
+        "title": "Cars",
+        "frequency": 2
+      }
+    ],
+    "phone": "012177972",
+    "age": 30
+  },
+  {
+    "name": "Anna",
+    "hobbies": [
+      {
+        "title": "Sports",
+        "frequency": 2
+      },
+      {
+        "title": "Yoga",
+        "frequency": 3
+      }
+    ],
+    "phone": "80811987291",
+    "age": null
+  },
+  {
+    "name": "Chris",
+    "hobbies": ["Sports", "Cooking", "Hiking"]
+  }
+]
+)
+{ acknowledged: true,
+  insertedIds: 
+   { '0': ObjectId("647f9917cd5c297283a923fb"),
+     '1': ObjectId("647f9917cd5c297283a923fc"),
+     '2': ObjectId("647f9917cd5c297283a923fd"),
+     '3': ObjectId("647f9917cd5c297283a923fe") } }
+ 
+------------------------------------------------
+
+
+
+db.persons.find().pretty()
+{ _id: ObjectId("647f9917cd5c297283a923fb"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: 131782734 }
+{ _id: ObjectId("647f9917cd5c297283a923fc"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30 }
+{ _id: ObjectId("647f9917cd5c297283a923fd"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: '80811987291',
+  age: null }
+{ _id: ObjectId("647f9917cd5c297283a923fe"),
+  name: 'Chris',
+  hobbies: [ 'Sports', 'Cooking', 'Hiking' ] }
+---------------------------------------------------------------------
+//InsertOne
+
+db.persons.drop()
+true
+ 
+ 
+ 
+ 
+db.persons.insertMany([
+  {
+    "name": "Max",
+    "hobbies": [
+      {
+        "title": "Sports",
+        "frequency": 3
+      },
+      {
+        "title": "Cooking",
+        "frequency": 6
+      }
+    ],
+    "phone": 131782734
+  },
+  {
+    "name": "Manuel",
+    "hobbies": [
+      {
+        "title": "Cooking",
+        "frequency": 5
+      },
+      {
+        "title": "Cars",
+        "frequency": 2
+      }
+    ],
+    "phone": "012177972",
+    "age": 30
+  },
+  {
+    "name": "Anna",
+    "hobbies": [
+      {
+        "title": "Sports",
+        "frequency": 2
+      },
+      {
+        "title": "Yoga",
+        "frequency": 3
+      }
+    ],
+    "phone": "80811987291",
+    "age": null
+  },
+  {
+    "name": "Chris",
+    "hobbies": ["Sports", "Cooking", "Hiking"]
+  }
+]
+)
+{ acknowledged: true,
+  insertedIds: 
+   { '0': ObjectId("64806307cd5c297283a92400"),
+     '1': ObjectId("64806307cd5c297283a92401"),
+     '2': ObjectId("64806307cd5c297283a92402"),
+     '3': ObjectId("64806307cd5c297283a92403") } }
+ 
+ 
+ 
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: 131782734 }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: '80811987291',
+  age: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: [ 'Sports', 'Cooking', 'Hiking' ] }
+ 
+ 
+db.persons.updateOne({name:"Chris", _id:ObjectId("64806307cd5c297283a92403")},{$set: {hobbies: [{title: 'Sports', frequency: 5},{title: 'Cooking',frequency:2},{title:'Hiking',frequency:6}]}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: 131782734 }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: '80811987291',
+  age: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ] }
+db.persons.find(name:"Chris")
+Error: clone(t={}){const r=t.loc||{};return e({loc:new Position("line"in r?r.line:this.loc.line,"column"in r?r.column:...<omitted>...)} could not be cloned.
+db.persons.find({name:"Chris"})
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ] }
+ 
+blog
+
+------------------------------------------------------------------------
+
+db.persons.find({"hobbies.title":"Sports"}).pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: 131782734 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: '80811987291',
+  age: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ] }
+
+-------------------------------------------------------------------------
+//updateMany()
+
+db.persons.updateMany({"hobbies.title":"Sports"},{$set:{isSporty:true}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 0,
+  upsertedCount: 0 }
+ 
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: 131782734,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: '80811987291',
+  age: null,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+  
+---------------------------------------------------------------------
+// How to increment age and add new fields as well//
+db.persons.updateOne({name:"Manuel"},{$inc: {age : 2}, $set: {isSporty:false}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 32,
+  isSporty: false }
+blog
+
+--------------------------------------------------------------------------
+// how to decrement age//
+
+db.persons.updateOne({name:"Manuel"},{$inc: {age : -3}, $set: {isSporty:false}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+ 
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 26,
+  isSporty: false }
+blog
+-------------------------------------------------------------------------------
+// working on same parameter creates conflict. Can't use inc and set at the same thomson
+db.persons.updateOne({name:"Manuel"},{$inc: {age : +3}, $set: {age : 40}})
+MongoServerError: Updating the path 'age' would create a conflict at 'age'
+-------------------------------------------------------------------------------
+// Min parameter//
+db.persons.updateOne({name:"Manuel"},{$min : {age : 30}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0 }
+ 
+db.persons.updateOne({name:"Manuel"},{$min : {age : 20}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 20,
+  isSporty: false }
+  
+------------------------------------------------------------------
+// Min parameter//
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30,
+  isSporty: false }
+ 
+db.persons.updateOne({name:"Manuel"},{$max : {age : 19}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0 }
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30,
+  isSporty: false }
+  
+------------------------------------------------------------------
+// mUltiplication operator//
+
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 30,
+  isSporty: false }
+ 
+ 
+db.persons.updateOne({name:"Manuel"},{$mul : {age : 1.1}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+db.persons.find({name:"Manuel"})
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 33,
+  isSporty: false }
+  
+----------------------------------------------
+// setting phone to NULL value//
+db.persons.updateMany({isSporty: true},{$set : {phone : null}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 2,
+  upsertedCount: 0 }
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: null,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 33,
+  isSporty: false }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: null,
+  age: null,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true,
+  phone: null }
+  
+----------------------------------------------------------
+// Setting NULL for phone field
+db.persons.updateMany({isSporty: true},{$set : {phone : null}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 2,
+  upsertedCount: 0 }
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  phone: null,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 33,
+  isSporty: false }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  phone: null,
+  age: null,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true,
+  phone: null }
+-----------------------------------------------------------------
+//
+db.persons.updateMany({isSporty: true},{$unset : {phone: ""}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0 }
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  age: 33,
+  isSporty: false }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  age: null,
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+blog
+-------------------------------------------------------------------
+// renaming a field using $rename operator//
+db.persons.updateMany({},{$rename : {age: "modifiedAge"}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 2,
+  upsertedCount: 0 }
+ 
+ 
+ 
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  isSporty: false,
+  modifiedAge: 33 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  isSporty: true,
+  modifiedAge: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+---------------------------------------------------------------------------
+// upsert works//
+
+db.persons.updateOne({name:"Maria"},{$set : {age: 29, hobbies:[{title : "Sports", frequency: 4, title:"Clubbing", frequency:10}]}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0 }
+ 
+db.persons.updateOne({name:"Maria"},{$set : {age: 29, hobbies:[{title : "Sports", frequency: 4}, {title:"Clubbing", frequency:10}]}},{upsert:true})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+ 
+ 
+db.persons.find({name:"Maria"})
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+ 
+blog
+-------------------------------------------------------------------
+// And operator and greater than equal too operator//
+db.persons.find({$and: [{"hobbies.title" : "Sports"}, {"hobbies.frequency": {$gte: 2}}]}).pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  isSporty: true,
+  modifiedAge: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+------------------------------------------------------------------
+//count() operator //
+
+db.persons.find({$and: [{"hobbies.title" : "Sports"}, {"hobbies.frequency": {$gte: 2}}]}).pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  isSporty: true,
+  modifiedAge: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+ 
+ 
+db.persons.find()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  isSporty: false,
+  modifiedAge: 33 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  isSporty: true,
+  modifiedAge: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+ 
+db.persons.find().count()
+5
+db.persons.find({$and: [{"hobbies.title" : "Sports"}, {"hobbies.frequency": {$gte: 2}}]}).count()
+4
+ 
+db.persons.find({$and: [{"hobbies.title" : "Clubbing"}, {"hobbies.frequency": {$gte: 2}}]}).count()
+1
+
+---------------------------------------------------------------------------
+// using $elemMatch
+
+
+db.persons.find({hobbies: {$elemMatch : {title: "Sports", frequency: {$gte : 3}}}}).pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+ 
+db.persons.find().pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92401"),
+  name: 'Manuel',
+  hobbies: 
+   [ { title: 'Cooking', frequency: 5 },
+     { title: 'Cars', frequency: 2 } ],
+  phone: '012177972',
+  isSporty: false,
+  modifiedAge: 33 }
+{ _id: ObjectId("64806307cd5c297283a92402"),
+  name: 'Anna',
+  hobbies: 
+   [ { title: 'Sports', frequency: 2 },
+     { title: 'Yoga', frequency: 3 } ],
+  isSporty: true,
+  modifiedAge: null }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+blog
+---------------------------------------------------------------------------
+
+db.persons.find({hobbies: {$elemMatch : {title: "Sports", frequency: {$gte : 3}}}}).pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3 },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5 },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4 },
+     { title: 'Clubbing', frequency: 10 } ] }
+ 
+db.persons.find({hobbies: {$elemMatch : {title: "Sports", frequency: {$gte : 3}}}}).count()
+3
+-----------------------------------------------------------------------------------
+// $elemMatch with set operator in updateMany//
+
+
+db.persons.updateMany({hobbies: {$elemMatch : {title: "Sports", frequency: {$gte : 3}}}},{$set: {"hobbies.$.highFrequency":true}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0 }
+
+db.persons.find({hobbies: {$elemMatch : {title: "Sports", frequency: {$gte : 3}}}}).count()
+3
+db.persons.find({hobbies: {$elemMatch : {title: "Sports", frequency: {$gte : 3}}}}).pretty()
+{ _id: ObjectId("64806307cd5c297283a92400"),
+  name: 'Max',
+  hobbies: 
+   [ { title: 'Sports', frequency: 3, highFrequency: true },
+     { title: 'Cooking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("64806307cd5c297283a92403"),
+  name: 'Chris',
+  hobbies: 
+   [ { title: 'Sports', frequency: 5, highFrequency: true },
+     { title: 'Cooking', frequency: 2 },
+     { title: 'Hiking', frequency: 6 } ],
+  isSporty: true }
+{ _id: ObjectId("6480e07a0f894975016758cf"),
+  name: 'Maria',
+  age: 29,
+  hobbies: 
+   [ { title: 'Sports', frequency: 4, highFrequency: true },
+     { title: 'Clubbing', frequency: 10 } ] }
+ 
+blog
+----------------------------------------------------------------------------------
+
+
+
+
+
